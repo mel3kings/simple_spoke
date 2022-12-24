@@ -6,7 +6,7 @@ namespace = "eg"
 
 stage = "test"
 
-name = "s3-test"
+name = "s3-test-one"
 
 acl = "private"
 
