@@ -33,6 +33,7 @@ output "bucket_region" {
   description = "Bucket region"
 }
 
+
 output "user_name" {
   value       = module.s3_bucket.user_name
   description = "Normalized IAM user name"
