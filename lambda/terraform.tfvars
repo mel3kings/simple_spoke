@@ -1,0 +1,8 @@
+region        = "ap-southeast-1"
+namespace     = "snippets"
+environment   = "personal"
+stage         = "prod"
+function_name = "example-hello-world"
+handler       = "handler.handler"
+runtime       = "nodejs14.x"
+filename      = "handler.js"
