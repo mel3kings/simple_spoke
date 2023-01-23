@@ -9,7 +9,7 @@
 echo "======= running terraform validate before committing ======="
 
 for d in */; do
-    (cd "$d" && terraform validate)
+    (cd "$d" && terraform init && terraform validate)
     if [[ $? -ne 0 ]]; then
         exit 1
     else
