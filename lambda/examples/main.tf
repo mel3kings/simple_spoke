@@ -13,19 +13,19 @@ locals {
 
   policy_arn_inside = format("%s/%s", local.policy_arn_prefix, local.policy_name_inside)
 
-  // TODO refer to valid IAM
-  policy_json = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "ec2:Describe*",
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
+#  // TODO refer to valid IAM
+#  policy_json = jsonencode({
+#    Version = "2012-10-17"
+#    Statement = [
+#      {
+#        Action = [
+#          "ec2:Describe*",
+#        ]
+#        Effect   = "Allow"
+#        Resource = "*"
+#      },
+#    ]
+#  })
 }
 
 module "label" {
@@ -50,30 +50,30 @@ data "archive_file" "lambda_zip" {
   source_file = "handler.py"
   output_path = "lambda_function.zip"
 }
-
-resource "aws_iam_policy" "inside" {
-  count       = local.enabled ? 1 : 0
-  name        = local.policy_name_inside
-  path        = "/"
-  description = "The policy attached inside the Lambda module"
-
-  policy = local.policy_json
-}
-
-resource "aws_iam_policy" "outside" {
-  count       = local.enabled ? 1 : 0
-  name        = local.policy_name_outside
-  path        = "/"
-  description = "The policy attached outside the Lambda module"
-
-  policy = local.policy_json
-}
-
-resource "aws_iam_role_policy_attachment" "outside" {
-  count      = local.enabled ? 1 : 0
-  role       = module.lambda.role_name
-  policy_arn = aws_iam_policy.outside[0].arn
-}
+#
+#resource "aws_iam_policy" "inside" {
+#  count       = local.enabled ? 1 : 0
+#  name        = local.policy_name_inside
+#  path        = "/"
+#  description = "The policy attached inside the Lambda module"
+#
+#  policy = local.policy_json
+#}
+#
+#resource "aws_iam_policy" "outside" {
+#  count       = local.enabled ? 1 : 0
+#  name        = local.policy_name_outside
+#  path        = "/"
+#  description = "The policy attached outside the Lambda module"
+#
+#  policy = local.policy_json
+#}
+#
+#resource "aws_iam_role_policy_attachment" "outside" {
+#  count      = local.enabled ? 1 : 0
+#  role       = module.lambda.role_name
+#  policy_arn = aws_iam_policy.outside[0].arn
+#}
 
 module "lambda" {
   source = "../"
@@ -86,11 +86,11 @@ module "lambda" {
 
   custom_iam_policy_arns = [
     "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess",
-    local.policy_arn_inside,
+    "arn:aws:iam::606526534964:policy/mel3kings-lambda-policy"
+    #local.policy_arn_inside,
     # aws_iam_policy.inside[0].id, # This will result in an error message and is why we use local.policy_name_inside
   ]
-
   context = module.this.context
 
-  depends_on = [aws_iam_policy.inside]
+#  depends_on = [aws_iam_policy.inside]
 }

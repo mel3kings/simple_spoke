@@ -1,0 +1,8 @@
+{
+  "Email": "foo3@foo.com",
+  "Timestamp": "Wed, 18 Jan 2023 01:45:40 GMT",
+  "Name": "Melchor",
+  "Address": {
+    "Country": "Australia"
+  }
+}

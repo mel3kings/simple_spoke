@@ -11,7 +11,23 @@ def lambda_handler(event, context):
     try:
         retroTable.put_item(Item=event)
     except Exception as e:
+        print("============!!!ERROR!!!=======")
         print(e)
-        return "Unable to insert data into DynamoDB table".format(e)
-    return "Success inserted"
-
+        errorResponse = {
+            "statusCode": 404,
+            "headers": {
+                "my_header": "my_value"
+            },
+            "body": e,
+            "isBase64Encoded": "false"
+        }
+        return errorResponse
+    response = {
+        "statusCode": 200,
+        "headers": {
+            "my_header": "my_value"
+        },
+        "body": "Success",
+        "isBase64Encoded": "false"
+    }
+    return response
