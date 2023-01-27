@@ -15,25 +15,6 @@ module "cloudwatch_log_group" {
   attributes        = ["lambda", var.function_name]
   context           = module.this.context
 }
-#
-#module "vpc" {
-#  source = "terraform-aws-modules/vpc/aws"
-#
-#  name = "my-vpc"
-#  cidr = "10.0.0.0/16"
-#
-#  azs             = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-#  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-#  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
-#
-#  enable_nat_gateway = true
-#  enable_vpn_gateway = true
-#
-#  tags = {
-#    Terraform = "true"
-#    Environment = "dev"
-#  }
-#}
 
 resource "aws_lambda_function" "this" {
   count                          = module.this.enabled ? 1 : 0
@@ -42,18 +23,14 @@ resource "aws_lambda_function" "this" {
   filename                       = var.filename
   function_name                  = var.function_name
   handler                        = var.handler
-#  image_uri                      = var.image_uri
   kms_key_arn                    = var.kms_key_arn
   layers                         = var.layers
   memory_size                    = var.memory_size
   package_type                   = var.package_type
   publish                        = var.publish
   reserved_concurrent_executions = var.reserved_concurrent_executions
-  role                           = aws_iam_role.this[0].arn
+  role                           = var.role
   runtime                        = var.runtime
-#  s3_bucket                      = var.s3_bucket
-#  s3_key                         = var.s3_key
-#  s3_object_version              = var.s3_object_version
   source_code_hash               = var.source_code_hash
   tags                           = var.tags
   timeout                        = var.timeout
@@ -102,6 +79,15 @@ resource "aws_lambda_function" "this" {
   lifecycle {
     ignore_changes = [last_modified]
   }
+}
+
+resource "aws_lambda_permission" "lambda_permission" {
+  statement_id  = "AllowMyDemoAPIInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = var.function_name
+  principal     = "apigateway.amazonaws.com"
+  # The /*/*/* part allows invocation from any stage, method and resource path within API Gateway REST API.
+  source_arn = "arn:aws:execute-api:ap-southeast-2:606526534964:8uhh4mqgo8/*/*/user"
 }
 
 data "aws_partition" "this" {
