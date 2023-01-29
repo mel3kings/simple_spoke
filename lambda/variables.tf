@@ -168,6 +168,12 @@ variable "runtime" {
   default     = null
 }
 
+variable "role" {
+  type        = string
+  description = "The runtime environment for the Lambda function you are uploading."
+  default     = null
+}
+
 variable "s3_bucket" {
   type        = string
   description = <<EOF
