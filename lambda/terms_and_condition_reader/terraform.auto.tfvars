@@ -1,0 +1,8 @@
+region        = "ap-southeast-2"
+namespace     = "mel3kings"
+environment   = ""
+stage         = ""
+function_name = "lambda-save-email-to-dynamo"
+handler       = "handler.lambda_handler"
+runtime       = "python3.7"
+filename      = "handler.py"
