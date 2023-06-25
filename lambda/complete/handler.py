@@ -15,18 +15,14 @@ def lambda_handler(event, context):
         print(e)
         errorResponse = {
             "statusCode": 404,
-            "headers": {
-                "my_header": "my_value"
-            },
+            "headers": {},
             "body": e,
             "isBase64Encoded": "false"
         }
         return errorResponse
     response = {
         "statusCode": 200,
-        "headers": {
-            "my_header": "my_value"
-        },
+        "headers": {},
         "body": "Success",
         "isBase64Encoded": "false"
     }
